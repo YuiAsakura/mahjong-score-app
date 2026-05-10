@@ -1,30 +1,58 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* 1. Tailwind v4 はこの1行だけでOKです（上の3行は削除） */
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 麻雀アプリの基本色（薄いグレー）を定義 */
+  --background: #f8fafc; /* slate-50 */
+  --foreground: #0f172a; /* slate-900 */
+}
+
+/* スマホの「黒くなる部分」対策：
+  システムのダークモード設定に引きずられないように、一旦色を固定します。
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* ここを #0a0a0a にしていたのが黒くなる原因です。
+      アプリのデザインを統一するため、ダークモードでも一旦同じ色にします。
+    */
+    --background: #f8fafc;
+    --foreground: #0f172a;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html,
+  body {
+    /* ブラウザ全体の背景を固定 */
+    background-color: var(--background);
+    color: var(--foreground);
+    
+    /* スマホで引っ張った時の「黒い余白」が見えるのを防ぐ */
+    overscroll-behavior-y: none;
+    
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    
+    -webkit-font-smoothing: antialiased;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  /* iOS Safari の勝手なズームを防止 */
+  input, select, textarea {
+    font-size: 16px !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* PCで見るときは外側を少し暗くしてスマホっぽさを強調 */
+@media (min-width: 768px) {
+  body {
+    background-color: #e2e8f0; /* slate-200 */
+  }
 }
