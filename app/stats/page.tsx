@@ -23,7 +23,7 @@ function StatsContent() {
       if (sessionId) {
         const session = await getSession(sessionId);
         if (session) {
-          const result = await calculateSessionStats(sessionId, session.members);
+          const result = await calculateSessionStats(sessionId);
           setData(result);
           setTitle(`${new Date(session.date).toLocaleDateString("ja-JP", { month: "short", day: "numeric" })}の分析`);
         }
