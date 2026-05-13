@@ -18,7 +18,7 @@ export default function StatsPage({ params }: { params: Promise<{ id: string }> 
     const fetchData = async () => {
       const session = await getSession(sessionId);
       if (session) {
-        const result = await calculateSessionStats(sessionId, session.members);
+        const result = await calculateSessionStats(sessionId);
         setData(result);
         // データがある方のタブをデフォルトにする
         if (result["4p"].length === 0 && result["3p"].length > 0) setActiveTab("3p");
