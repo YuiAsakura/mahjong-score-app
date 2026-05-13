@@ -4,7 +4,7 @@ import React from "react";
 interface ScoreTableProps {
   players: string[];
   scores: Record<string, number>;
-  seats: Record<string, string>;
+  seats: Record<string, string | null | undefined >;
   parent: string;
 }
 

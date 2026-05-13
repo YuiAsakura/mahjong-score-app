@@ -169,10 +169,7 @@ export default function HanchanPage({ params }: { params: Promise<{ hanchanId: s
         <ScoreTable 
           players={hanchan.players} 
           scores={hanchan.finalScore} 
-          seats={{
-            ...hanchan.seats,
-            north: hanchan.seats.north ?? "" // null の場合は空文字として渡す
-          }}
+          seats={hanchan.seats} 
           parent={hanchan.status === "completed" ? "" : hanchan.players[gameState.parentSeatIndex]}
         />
         
