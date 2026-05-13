@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { calculateGlobalStats, StatsResult, UserStats } from "@/lib/crud/stats";
-import { UserStatCard } from "@/components/stats/UserCard";
+import { UserCard } from "@/components/stats/UserCard";
 import { ChevronLeft } from "lucide-react";
 
 export default function GlobalStatsPage() {
@@ -58,7 +58,7 @@ export default function GlobalStatsPage() {
 
       <div className="space-y-4">
         {data && data[activeTab].map((user: UserStats) => (
-          <UserStatCard 
+          <UserCard 
             key={user.name} 
             stats={{
               userName: user.name,
