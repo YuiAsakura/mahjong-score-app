@@ -107,6 +107,13 @@ async function aggregateStats(
 export async function calculateGlobalStats(): Promise<StatsResult> {
   const q = query(collectionGroup(db, "hanchans"), where("status", "==", "completed"));
   const snapshot = await getDocs(q);
+
+  // --- デバッグ用 ---
+  console.log("Firestoreから取得した対局数:", snapshot.docs.length);
+  if (snapshot.docs.length > 0) {
+    console.log("1件目のデータ:", snapshot.docs[0].data());
+  }
+  // -----------------
   
   const hanchans = snapshot.docs.map(d => ({
     id: d.id,
