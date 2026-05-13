@@ -3,7 +3,7 @@ import { RankPieChart } from "./RankPieChart";
 
 interface UserStats {
   userName: string;
-  matchCount: number;
+  totalHanchans: number;
   agariRate: number;
   houjuRate: number;
   avgAgariScore: number;
@@ -25,7 +25,7 @@ export function UserStatCard({ stats }: { stats: UserStats }) {
         <div className="bg-slate-50 p-3 rounded-2xl text-center flex flex-col justify-center">
           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Matches</span>
           <div className="flex items-baseline justify-center gap-0.5">
-            <span className="text-xl font-black text-slate-800">{stats.matchCount}</span>
+            <span className="text-xl font-black text-slate-800">{stats.totalHanchans}</span>
             <span className="text-[10px] font-bold text-slate-400">戦</span>
           </div>
         </div>
