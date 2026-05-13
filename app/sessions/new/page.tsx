@@ -35,6 +35,18 @@ export default function NewSessionPage() {
     setIsSubmitting(true);
     
     try {
+      const { addUser } = await import("@/lib/crud/user"); // その場でインポート
+      // まだマスターにいない名前を抽出して登録
+      const existingNames = allUsers.map(u => u.name);
+      const newNames = selectedMembers.filter(name => !existingNames.includes(name));
+      
+      // 未登録の名前があれば Firestore の /users に保存
+      await Promise.all(newNames.map(name => addUser(name)));
+    } catch (e) {
+      console.error("ユーザーマスターへの登録に失敗しましたが、続行します", e);
+    }
+
+    try {
       const sessionId = await createSession({
         date,
         members: selectedMembers,
@@ -68,6 +80,28 @@ export default function NewSessionPage() {
             <label className="block text-sm font-black text-slate-700 mb-2">
               参加メンバーを選択
             </label>
+
+            <div className="flex flex-wrap gap-2 mb-6 p-4 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200 min-h-[60px] items-center">
+              {selectedMembers.length > 0 ? (
+                selectedMembers.map(name => (
+                  <span 
+                    key={name} 
+                    className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-black text-slate-700 shadow-sm flex items-center gap-1"
+                  >
+                    {name}
+                    <button 
+                      type="button" 
+                      onClick={() => setSelectedMembers(prev => prev.filter(n => n !== name))}
+                      className="text-slate-400 hover:text-red-500 ml-1"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))
+              ) : (
+                <p className="text-[10px] text-slate-400 font-bold italic mx-auto">メンバーが選択されていません</p>
+              )}
+            </div>
             
             {/* 1. マスターから選ぶチップリスト */}
             <div className="flex flex-wrap gap-2 mb-4">
