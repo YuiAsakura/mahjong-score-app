@@ -54,7 +54,7 @@ export default function NewHanchanPage({ params }: { params: Promise<{ id: strin
           east: players[0],
           south: players[1],
           west: players[2],
-          north: is4p ? players[3] : undefined,
+          north: is4p ? players[3] : null,
         },
         startScore: startScore,
         finalScore: Object.fromEntries(

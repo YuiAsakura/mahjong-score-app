@@ -10,7 +10,7 @@ export interface Hanchan {
     east: string;
     south: string;
     west: string;
-    north?: string;
+    north?: string | null;
   };
   startScore: number;      // 開始点数
   finalScore: Record<string, number>; // 現在の点数
