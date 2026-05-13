@@ -1,29 +1,43 @@
 // app/sessions/new/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createSession } from "@/lib/crud/sessions";
+import { getUsers, UserMaster } from "@/lib/crud/user"
 import { Button } from "@/components/common/Button";
 
 export default function NewSessionPage() {
   const router = useRouter();
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [memberInput, setMemberInput] = useState("");
+  const [allUsers, setAllUsers] = useState<UserMaster[]>([]); 
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [newMemberName, setNewMemberName] = useState("");
   const [memo, setMemo] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    async function loadUsers() {
+      try {
+        const users = await getUsers();
+        setAllUsers(users);
+      } catch (error) {
+        console.error("ユーザーの取得に失敗しました:", error);
+      }
+    }
+    loadUsers();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!memberInput.trim()) return alert("メンバーを入力してください");
 
+    if (selectedMembers.length === 0) return alert("メンバーを選択してください");
     setIsSubmitting(true);
-    const members = memberInput.split(/[、, ]/).filter((m) => m.trim() !== "");
     
     try {
       const sessionId = await createSession({
         date,
-        members,
+        members: selectedMembers,
         memo,
       });
       router.push(`/session/${sessionId}`);
@@ -50,17 +64,58 @@ export default function NewSessionPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              参加メンバー（カンマかスペース区切り）
+<div>
+            <label className="block text-sm font-black text-slate-700 mb-2">
+              参加メンバーを選択
             </label>
-            <input
-              type="text"
-              placeholder="例: 山田, 田中, 佐藤, 鈴木"
-              value={memberInput}
-              onChange={(e) => setMemberInput(e.target.value)}
-              className="w-full p-3 border rounded-lg"
-            />
+            
+            {/* 1. マスターから選ぶチップリスト */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {allUsers.map((user) => (
+                <button
+                  key={user.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedMembers(prev => 
+                      prev.includes(user.name) 
+                        ? prev.filter(n => n !== user.name) 
+                        : [...prev, user.name]
+                    );
+                  }}
+                  className={`px-4 py-2 rounded-full text-xs font-black border transition-all ${
+                    selectedMembers.includes(user.name)
+                      ? "bg-slate-800 text-white border-slate-800 shadow-md scale-105"
+                      : "bg-white text-slate-400 border-slate-200"
+                  }`}
+                >
+                  {user.name}
+                </button>
+              ))}
+            </div>
+
+            {/* 2. マスターにいない人をその場で追加する欄 */}
+            <div className="flex gap-2 p-2 bg-slate-50 rounded-2xl border border-slate-100">
+              <input
+                type="text"
+                placeholder="新しいメンバーを一時追加"
+                value={newMemberName}
+                onChange={(e) => setNewMemberName(e.target.value)}
+                className="flex-1 bg-transparent px-3 py-1 text-sm outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  if (!newMemberName.trim()) return;
+                  if (!selectedMembers.includes(newMemberName.trim())) {
+                    setSelectedMembers([...selectedMembers, newMemberName.trim()]);
+                  }
+                  setNewMemberName("");
+                }}
+                className="bg-white px-4 py-1 rounded-xl text-[10px] font-black text-slate-600 shadow-sm"
+              >
+                追加
+              </button>
+            </div>
           </div>
 
           <div>
