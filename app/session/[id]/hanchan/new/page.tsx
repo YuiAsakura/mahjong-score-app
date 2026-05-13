@@ -26,9 +26,7 @@ export default function NewHanchanPage({ params }: { params: Promise<{ id: strin
         const sessionDoc = await getDoc(doc(db, "sessions", sessionId));
         if (sessionDoc.exists()) {
           const data = sessionDoc.data();
-          // セッション作成時に保存したメンバーリスト（memberNames等）を取得
-          // プロパティ名は既存のDB設計に合わせて調整してください
-          setMemberOptions(data.memberNames || []);
+          setMemberOptions(data.members || []);
         }
       } catch (e) {
         console.error("Error fetching members:", e);
