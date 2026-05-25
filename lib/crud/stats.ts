@@ -105,7 +105,7 @@ async function aggregateStats(
  * 全セッションを横断して通算戦績を算出（collectionGroupを使用）
  */
 export async function calculateGlobalStats(): Promise<StatsResult> {
-  const q = query(collectionGroup(db, "hanchans"), where("status", "==", "completed"));
+  const q = query(collectionGroup(db, "hanchans"));
   const snapshot = await getDocs(q);
 
   // --- デバッグ用 ---
