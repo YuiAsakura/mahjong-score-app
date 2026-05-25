@@ -76,8 +76,7 @@ async function aggregateStats(
       // 和了・ツモ・打点
       if (r.resultType === "agari" && r.winner && targetMap[r.winner]) {
         targetMap[r.winner].winCount++;
-        // 打点を加算（フィールド名が agariScore の前提）
-        const score = (r as any).agariScore || 0; 
+        const score = r.scoreDelta && r.winner ? (r.scoreDelta[r.winner] || 0) : 0;
         targetMap[r.winner].totalAgariScore += score;
 
         if (r.tsumoOrRon === "tsumo") {
