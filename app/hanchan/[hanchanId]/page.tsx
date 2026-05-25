@@ -7,7 +7,8 @@ import { getHanchan, updateHanchan } from "@/lib/crud/hanchans";
 import { createRound } from "@/lib/crud/rounds";
 import { ScoreTable } from "@/components/hanchan/ScoreTable";
 import { RoundInputForm } from "@/components/hanchan/RoundInputForm";
-import { Button } from "@/components/common/Button"; // ← ここを追加しました
+import { RoundHistoryList } from "@/components/hanchan/RoundHistoryList";
+import { Button } from "@/components/common/Button";
 import { advanceRound, getCurrentRoundName } from "@/lib/round/roundProgress";
 import { shouldEnterWest } from "@/lib/round/roundName";
 import { calculateScore } from "@/lib/score/calculator";
@@ -184,6 +185,9 @@ export default function HanchanPage({ params }: { params: Promise<{ hanchanId: s
             >
               対局一覧に戻る
             </Button>
+
+            <RoundHistoryList sessionId={sessionId} hanchanId={hanchanId} />
+            
           </div>
         )}
       </div>
