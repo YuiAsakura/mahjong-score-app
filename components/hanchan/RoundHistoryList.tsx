@@ -18,6 +18,29 @@ export const RoundHistoryList = ({ sessionId, hanchanId }: Props) => {
       if (!sessionId || !hanchanId) return;
       try {
         const data = await getAllRounds(sessionId, hanchanId);
+
+        const sortedData = data.sort((a, b) => {
+          const getScore = (r: Round) => {
+            let score = 0;
+            // 1. 場の重み付け（東は1000、南は2000...）
+            if (r.roundName.includes("東")) score += 1000;
+            else if (r.roundName.includes("南")) score += 2000;
+            else if (r.roundName.includes("西")) score += 3000;
+            else if (r.roundName.includes("北")) score += 4000;
+
+            // 2. 局数を足す（例: 2局なら +20）
+            const match = r.roundName.match(/\d+/);
+            if (match) score += parseInt(match[0], 10) * 10;
+
+            // 3. 本場を足す（例: 2本場なら +2）
+            score += r.honba || 0;
+
+            return score;
+          };
+
+          return getScore(a) - getScore(b);
+        });
+
         setRounds(data);
       } catch (error) {
         console.error("局データの取得失敗:", error);
