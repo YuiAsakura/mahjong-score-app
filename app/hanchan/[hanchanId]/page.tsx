@@ -95,7 +95,7 @@ export default function HanchanPage({ params }: { params: Promise<{ hanchanId: s
     // 4. 局進行計算
     const nextState = advanceRound(hanchan.players, gameState, data, Object.values(newFinalScore), is3p);
 
-    // 5. 終了判定（オーラス判定）
+    // 5. 終了判定（オーラス判定 + トビ判定）
     const isLastRound = (!is3p && gameState.roundIndex >= 7) || (is3p && gameState.roundIndex >= 5);
     
     // あがりやめ・テンパイやめ判定
@@ -106,7 +106,8 @@ export default function HanchanPage({ params }: { params: Promise<{ hanchanId: s
     }
 
     const westEntry = shouldEnterWest(is3p, nextState.roundIndex, Object.values(newFinalScore));
-    const isGameOver = isAgariYame || (isLastRound && (nextState.roundIndex > gameState.roundIndex) && !westEntry);
+    const isTobi = Object.values(newFinalScore).some(score => score <= 0);
+    const isGameOver = isTobi || isAgariYame || (isLastRound && (nextState.roundIndex > gameState.roundIndex) && !westEntry);
 
     // 6. 保存データ整理
     const roundSaveData: any = {
@@ -187,7 +188,7 @@ export default function HanchanPage({ params }: { params: Promise<{ hanchanId: s
             </Button>
 
             <RoundHistoryList sessionId={sessionId} hanchanId={hanchanId} />
-            
+
           </div>
         )}
       </div>
