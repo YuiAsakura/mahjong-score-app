@@ -69,7 +69,12 @@ export const RoundInputForm: React.FC<RoundInputFormProps> = ({ players, onSubmi
           </div>
           <div className="flex gap-3">
             <select className="flex-1 p-2.5 bg-slate-50 border rounded-xl text-sm font-bold" value={han} onChange={(e) => setHan(Number(e.target.value))}>
-              {[1,2,3,4,5,6,8,11,13].map(v => <option key={v} value={v}>{v >= 13 ? "役満" : `${v}翻`}</option>)}
+              {Array.from({ length: 12 }, (_, i) => i + 1).map(v => (
+                <option key={v} value={v}>{v}翻</option>
+              ))}
+              <option value={13}>13翻 (役満)</option>
+              <option value={26}>26翻 (ダブル役満)</option>
+              <option value={39}>39翻 (トリプル役満)</option>
             </select>
             <select className="flex-1 p-2.5 bg-slate-50 border rounded-xl text-sm font-bold" value={fu} onChange={(e) => setFu(Number(e.target.value))}>
               {[20,25,30,40,50,60,70,80,90,100,110].map(v => <option key={v} value={v}>{v}符</option>)}
