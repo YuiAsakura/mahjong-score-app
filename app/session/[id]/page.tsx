@@ -73,13 +73,6 @@ export default function SessionDetailPage({ params }: { params: Promise<{ id: st
               </span>
             ))}
           </div>
-
-          <button 
-            onClick={() => router.push(`/stats?sessionId=${sessionId}`)}
-            className="mt-4 flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-2xl text-xs font-black shadow-lg shadow-blue-100 active:scale-95 transition-all w-full"
-          >
-            📊 このセッションの戦績を分析する
-          </button>
         </div>
       </header>
 
