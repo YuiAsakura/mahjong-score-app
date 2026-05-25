@@ -46,18 +46,28 @@ export const RoundHistoryList = ({ sessionId, hanchanId }: Props) => {
               </span>
             </div>
 
-            {r.resultType === "agari" && (
+{r.resultType === "agari" && (
               <div className="space-y-2">
-                <div className="flex flex-wrap items-center gap-2 font-bold">
-                  <span className="text-orange-500 font-black">和了</span>
-                  <span className="text-slate-800">{r.winner}</span>
-                  <span className="text-[10px] px-1.5 py-0.5 bg-orange-50 text-orange-600 rounded">
-                    {r.tsumoOrRon === "tsumo" ? "ツモ" : "ロン"}
-                  </span>
-                  {r.tsumoOrRon === "ron" && r.loser && (
-                    <span className="text-slate-500 text-xs">（放銃: {r.loser}）</span>
+                <div className="flex justify-between items-center">
+                  
+                  <div className="flex flex-wrap items-center gap-2 font-bold">
+                    <span className="text-orange-500 font-black">和了</span>
+                    <span className="text-slate-800">{r.winner}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 bg-orange-50 text-orange-600 rounded">
+                      {r.tsumoOrRon === "tsumo" ? "ツモ" : "ロン"}
+                    </span>
+                    {r.tsumoOrRon === "ron" && r.loser && (
+                      <span className="text-slate-500 text-xs">（放銃: {r.loser}）</span>
+                    )}
+                  </div>
+
+                  {r.scoreDelta && r.winner && r.scoreDelta[r.winner] > 0 && (
+                    <span className="text-lg font-black text-orange-600 tracking-tight">
+                      +{r.scoreDelta[r.winner].toLocaleString()} 点
+                    </span>
                   )}
                 </div>
+
                 {(r.han !== undefined || r.roleText) && (
                   <div className="p-2 bg-slate-50 rounded-lg text-xs space-y-1 text-slate-600">
                     {r.han !== undefined && <div><span className="font-black text-slate-700">{r.han} 翻</span></div>}
