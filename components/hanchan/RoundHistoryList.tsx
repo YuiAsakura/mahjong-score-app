@@ -46,7 +46,7 @@ export const RoundHistoryList = ({ sessionId, hanchanId }: Props) => {
               </span>
             </div>
 
-{r.resultType === "agari" && (
+            {r.resultType === "agari" && (
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   
@@ -68,10 +68,10 @@ export const RoundHistoryList = ({ sessionId, hanchanId }: Props) => {
                   )}
                 </div>
 
-                {(r.han !== undefined || r.roleText) && (
+                {(r.han !== undefined || r.memo) && (
                   <div className="p-2 bg-slate-50 rounded-lg text-xs space-y-1 text-slate-600">
                     {r.han !== undefined && <div><span className="font-black text-slate-700">{r.han} 翻</span></div>}
-                    {r.roleText && <div>役: <span className="font-bold text-slate-700">{r.roleText}</span></div>}
+                    {r.memo && <div><span className="font-bold text-slate-700">📝 {r.memo}</span></div>}
                   </div>
                 )}
               </div>
@@ -89,8 +89,6 @@ export const RoundHistoryList = ({ sessionId, hanchanId }: Props) => {
                 <span className="font-black mr-2">チョンボ</span> 違反者: {r.offender}
               </div>
             )}
-
-            {r.memo && <div className="mt-2 text-xs text-slate-400 italic">📝 {r.memo}</div>}
           </div>
         ))}
       </div>
